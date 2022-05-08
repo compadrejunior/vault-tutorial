@@ -1,4 +1,20 @@
 # Hashicorp Vault Tutorial
+
+Esse tutorial visa simplificar os passos de instalação, configuração e utilização do Hashicorp Vault.
+
+# Índice
+- [Hashicorp Vault Tutorial](#hashicorp-vault-tutorial)
+- [Índice](#índice)
+- [Visão Geral](#visão-geral)
+- [Development Mode](#development-mode)
+  - [:hammer: Instando o Vault](#hammer-instando-o-vault)
+  - [:arrow_forward: Iniciando o servidor em modo desenvolvimento](#arrow_forward-iniciando-o-servidor-em-modo-desenvolvimento)
+  - [:key: Key/Value secrets engine](#key-keyvalue-secrets-engine)
+    - [Criando um segredo](#criando-um-segredo)
+    - [Lendo um segredo](#lendo-um-segredo)
+  - [:closed_lock_with_key: Dynamic Secrets](#closed_lock_with_key-dynamic-secrets)
+    - [Habilitando o mecanismo de segredos da AWS](#habilitando-o-mecanismo-de-segredos-da-aws)
+  - [:ticket: Autenticação com Token](#ticket-autenticação-com-token)
 #  Visão Geral 
 O Hasicorp Vault permite gerenciar credenciais de todos os tipos de maneira segura, facilitando a criação e obtenção de chaves e implementando diversos engines de gerenciamento de credenciais. 
 
@@ -32,7 +48,7 @@ Instale o Vault seguindo as instruções da página de [Download](https://www.va
     export VAULT_ADDR='http://127.0.0.1:8200'
     ```
 
-## :arrow_forward: Key/Value secrets engine
+## :key: Key/Value secrets engine
 O Vault trabalha com diversos gerenciadores de credenciais como AWS, Github, KV (Key/Value secrets engine) e outros. 
 
 O engine KV é o modo padrão do vault e vem habilitado por padrão. 
@@ -69,7 +85,7 @@ secret/       kv           kv_cbb9c9f2           key/value secret storage
 sys/          system       system_aeaf18d4       system endpoints used for control, policy and debugging
 ```
 
-### :arrow_forward: Criando um segredo
+### Criando um segredo
 
 1. Digite o comando abaixo para ver a lista de opções do comando put. 
 
@@ -91,7 +107,7 @@ sys/          system       system_aeaf18d4       system endpoints used for contr
       - **excited**: outra chave definida pelo usuário
       - **yes**: o valor da segunda chave definida pelo usuário.
 
-### :arrow_forward: Lendo um segredo
+### Lendo um segredo
 
 Para ler o valor da chave armazenada anteriormente utilize o comando abaixo:
 
@@ -131,7 +147,7 @@ vault kv get -field=excited secret/hello
 ## :closed_lock_with_key: Dynamic Secrets
 Segredos dinâmicos são gerados quando são acessados. Segredos dinâmicos não existem até que sejam lidos, portanto, não há risco de alguém roubá-los ou outro cliente usando os mesmos segredos. Como o Vault possui mecanismos de revogação integrados, os segredos dinâmicos podem ser revogados imediatamente após o uso, minimizando o tempo de existência do segredo.
 
-### :arrow_forward: Habilitando o mecanismo de segredos da AWS
+### Habilitando o mecanismo de segredos da AWS
 
 1. Digite o comando abaixo:
 
