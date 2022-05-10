@@ -17,8 +17,9 @@ Esse tutorial visa simplificar os passos de instalação, configuração e utili
   - [:ticket: Autenticação com Token](#ticket-autenticação-com-token)
 - [Production mode](#production-mode)
   - [Configurando o servidor](#configurando-o-servidor)
+- [Próximos Passos](#próximos-passos)
 #  Visão Geral 
-O Hashicorp Vault permite gerenciar credenciais de todos os tipos de maneira segura, facilitando a criação e obtenção de chaves e implementando diversos engines de gerenciamento de credenciais. 
+O Hashicorp Vault permite gerenciar credenciais de todos os tipos de maneira segura, facilitando a criação e obtenção de chaves e implementando diversos mecanismos (engines) de gerenciamento de credenciais. 
 
 O Vault vem com vários componentes conectáveis chamados mecanismos de segredos e métodos de autenticação que permitem a integração com sistemas externos. O objetivo desses componentes é gerenciar e proteger seus segredos em infraestrutura dinâmica (por exemplo, credenciais de banco de dados, senhas, chaves de API).
 
@@ -321,7 +322,7 @@ Essa etapa irá guia-lo no deploy do Hashicorp Vault em ambiente de produção.
     ```bash
     vault operator init
     ```
-6. Salve as chaves informadas no console.
+6. Salve as chaves informadas no console em um local seguro.
 7. Execute o comando abaixo informando a primeira chave. 
     ```bash
     vault operator unseal
@@ -371,3 +372,13 @@ Essa etapa irá guia-lo no deploy do Hashicorp Vault em ambiente de produção.
     identity_policies    []
     policies             ["root"]
     ```
+
+# Próximos Passos
+
+Para saber mais sobre o Hashicorp Vault siga os links abaixo:
+
+- [Tutorial sobre Policies](https://learn.hashicorp.com/tutorials/vault/getting-started-policies?in=vault/getting-started)
+- [Usando a API HTTP do Vault](https://learn.hashicorp.com/tutorials/vault/getting-started-apis?in=vault/getting-started)
+- [Configurando o Vault pela Interface Web](https://learn.hashicorp.com/tutorials/vault/getting-started-ui?in=vault/getting-started)
+
+Esse tutorial foi baseado no [CLI Quick Start](https://learn.hashicorp.com/collections/vault/getting-started) da Hashicorp.
