@@ -289,7 +289,6 @@ Essa etapa irá guia-lo no deploy do Hashicorp Vault em ambiente de produção.
 ## Configurando o servidor
 
 1. Crie o arquivo config.hcl com o seguinte conteúdo.
-
     ```bash
     storage "raft" {
       path    = "./vault/data"
@@ -305,16 +304,70 @@ Essa etapa irá guia-lo no deploy do Hashicorp Vault em ambiente de produção.
     cluster_addr = "https://127.0.0.1:8201"
     ui = true
     ```
-
 2. Crie o diretório de storage.
-
     ```bash
     mkdir -p ./vault/data
     ```
-
 3. Inicie o servidor definindo o parâmetro -config para apontar para o caminho adequado onde você salvou a configuração acima.
-
     ```bash
     vault server -config=config.hcl
     ```
+4. Exporte a variável VAULT_ADDR
+    ```bash
+    export VAULT_ADDR='http://127.0.0.1:8200'
+    ```
+5. Inicialize o operador do Vault
 
+    ```bash
+    vault operator init
+    ```
+6. Salve as chaves informadas no console.
+7. Execute o comando abaixo informando a primeira chave. 
+    ```bash
+    vault operator unseal
+    ```
+8. Continue com a deslacração do operador do vault para concluir a abertura do Vault. Para deslacrar o cofre você deve usar três chaves diferentes de unseal, a mesma chave repetida não funcionará. 
+9. O resultado será parecido com a saída abaixo:
+
+    ```bash
+    Key                     Value
+    ---                     -----
+    Seal Type               shamir
+    Initialized             true
+    Sealed                  false
+    Total Shares            5
+    Threshold               3
+    Version                 1.7.0
+    Storage Type            raft
+    Cluster Name            vault-cluster-0ba62cae
+    Cluster ID              7d49e5fd-a1a4-c1d1-55e2-7962e43006a1
+    HA Enabled              true
+    HA Cluster              n/a
+    HA Mode                 standby
+    Active Node Address     &lt;none&gt;
+    Raft Committed Index    24
+    Raft Applied Index      24
+    ```
+10. Quando o valor de Sealed muda para false, o Vault é deslacrado.
+11. Por fim, autentique como o token raiz inicial (foi incluído na saída com as chaves de unseal).
+    ```bash
+    vault login
+    ```
+12. Insira o valor do token quando solicitado.
+13. O resultado será parecido com a saída abaixo:
+
+    ```bash
+    Success! You are now authenticated. The token information displayed below
+    is already stored in the token helper. You do NOT need to run "vault login"
+    again. Future Vault requests will automatically use this token.
+
+    Key                  Value
+    ---                  -----
+    token                s.spAZOi7SlpdFTNed50sYYCIU
+    token_accessor       OevFmMXjbmOCQ8rSubY84vVp
+    token_duration       ∞
+    token_renewable      false
+    token_policies       ["root"]
+    identity_policies    []
+    policies             ["root"]
+    ```
