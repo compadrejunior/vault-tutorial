@@ -15,8 +15,10 @@ Esse tutorial visa simplificar os passos de instalação, configuração e utili
   - [:closed_lock_with_key: Dynamic Secrets](#closed_lock_with_key-dynamic-secrets)
     - [Habilitando o mecanismo de segredos da AWS](#habilitando-o-mecanismo-de-segredos-da-aws)
   - [:ticket: Autenticação com Token](#ticket-autenticação-com-token)
+- [Production mode](#production-mode)
+  - [Configurando o servidor](#configurando-o-servidor)
 #  Visão Geral 
-O Hasicorp Vault permite gerenciar credenciais de todos os tipos de maneira segura, facilitando a criação e obtenção de chaves e implementando diversos engines de gerenciamento de credenciais. 
+O Hashicorp Vault permite gerenciar credenciais de todos os tipos de maneira segura, facilitando a criação e obtenção de chaves e implementando diversos engines de gerenciamento de credenciais. 
 
 O Vault vem com vários componentes conectáveis chamados mecanismos de segredos e métodos de autenticação que permitem a integração com sistemas externos. O objetivo desses componentes é gerenciar e proteger seus segredos em infraestrutura dinâmica (por exemplo, credenciais de banco de dados, senhas, chaves de API).
 
@@ -136,7 +138,7 @@ foo        world
 
 O campo version indica a versão do segredo. 
 
-Para imprimir apenas o valor de uma chave específica use o comando vault kv get informando o parâmentro -field, o caminho e o segredo. 
+Para imprimir apenas o valor de uma chave específica use o comando vault kv get informando o parâmetro -field, o caminho e o segredo. 
 
 Exemplo:
 
@@ -213,7 +215,11 @@ Segredos dinâmicos são gerados quando são acessados. Segredos dinâmicos não
 
 ## :ticket: Autenticação com Token
 
-A autenticação de token é habilitada automaticamente. Quando você iniciou o servidor de desenvolvimento, a saída exibiu um token raiz. A CLI do Vault lê o token raiz da variável de ambiente $VAULT_TOKEN. Esse token raiz pode executar qualquer operação no Vault porque é atribuído à política raiz. Um recurso é criar novos tokens.
+A autenticação de token é habilitada automaticamente. Quando você iniciou o 
+servidor de desenvolvimento, a saída exibiu um token raiz. A CLI do Vault lê o 
+token raiz da variável de ambiente $VAULT_TOKEN. Esse token raiz pode executar 
+qualquer operação no Vault porque é atribuído à política raiz. Um recurso é 
+criar novos tokens.
 
 1. Para criar um token digite:
 
@@ -266,10 +272,50 @@ A autenticação de token é habilitada automaticamente. Quando você iniciou o 
     policies             ["root"]
     ```
 
-6. Para revogar o token execute o comando vault revoke, informando o token obtido no passo anterior. 
+6. Para revogar o token execute o comando vault revoke, informando o token 
+   obtido no passo anterior. 
 
     Exemplo: 
 
     ```bash 
     vault token revoke s.iyNUhq8Ov4hIAx6snw5mB2nL
     ```
+
+# Production mode
+Essa etapa irá guia-lo no deploy do Hashicorp Vault em ambiente de produção. 
+
+  > Se o servidor do Vault estiver sendo executado no modo de desenvolvimento, é necessário parar o servidor pressionando CTRL+C no terminal. Também remova a variável de ambiente VAULT_TOKEN através do comando ```unset VAULT_TOKEN```
+
+## Configurando o servidor
+
+1. Crie o arquivo config.hcl com o seguinte conteúdo.
+
+    ```bash
+    storage "raft" {
+      path    = "./vault/data"
+      node_id = "node1"
+    }
+
+    listener "tcp" {
+      address     = "127.0.0.1:8200"
+      tls_disable = "true"
+    }
+
+    api_addr = "http://127.0.0.1:8200"
+    cluster_addr = "https://127.0.0.1:8201"
+    ui = true
+    ```
+
+2. Crie o diretório de storage.
+
+    ```bash
+    mkdir -p ./vault/data
+    ```
+
+3. Defina o parâmetro -config para apontar para o caminho adequado onde você salvou a configuração acima.
+
+    ```bash
+    vault server -config=config.hcl
+    ```
+
+  
