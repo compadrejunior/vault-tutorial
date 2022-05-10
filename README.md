@@ -312,10 +312,9 @@ Essa etapa irá guia-lo no deploy do Hashicorp Vault em ambiente de produção.
     mkdir -p ./vault/data
     ```
 
-3. Defina o parâmetro -config para apontar para o caminho adequado onde você salvou a configuração acima.
+3. Inicie o servidor definindo o parâmetro -config para apontar para o caminho adequado onde você salvou a configuração acima.
 
     ```bash
     vault server -config=config.hcl
     ```
 
-  
